@@ -10,7 +10,7 @@ OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
 - **多语言**：首次启动选择语言；UN 6 种内置完整目录，其他 30M+ 语言列出并由社区 JSON 补齐。
 - **大文件**：文本 2MB 窗口 + mmap；视频流式解码/拖动；PDF 只渲染可见页。
 
-[![Build](https://github.com/USER/OmniView/actions/workflows/build.yml/badge.svg)](../../actions)
+![Build](https://img.shields.io/badge/build-GitHub%20Actions-2088FF?logo=githubactions)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-0078D4)
 ![CPU](https://img.shields.io/badge/runtime-CPU%20only-4fd1c5)
 ![License](https://img.shields.io/badge/license-FSL--1.1--ALv2-7aa2ff)

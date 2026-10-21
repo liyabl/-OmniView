@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>示例地图</name>
+<Placemark><name>天安门</name><Point><coordinates>116.3975,39.9087,0</coordinates></Point></Placemark>
+<Placemark><name>故宫</name><Polygon><outerBoundaryIs><LinearRing><coordinates>116.390,39.916 116.403,39.916 116.403,39.924 116.390,39.924 116.390,39.916</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+</Document></kml>

@@ -1,0 +1,11 @@
+{
+ "id": "hello",
+ "name": "Hello Viewer",
+ "version": "1.0.0",
+ "api": 1,
+ "formats": [
+  "hello"
+ ],
+ "entry": "plugin.py",
+ "factory": "create_viewer"
+}

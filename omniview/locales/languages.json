@@ -1,0 +1,466 @@
+[
+ {
+  "code": "en",
+  "native": "English",
+  "english": "English",
+  "rtl": false,
+  "un": true,
+  "speakers": 1500
+ },
+ {
+  "code": "zh",
+  "native": "简体中文",
+  "english": "Chinese",
+  "rtl": false,
+  "un": true,
+  "speakers": 1200
+ },
+ {
+  "code": "fr",
+  "native": "Français",
+  "english": "French",
+  "rtl": false,
+  "un": true,
+  "speakers": 300
+ },
+ {
+  "code": "es",
+  "native": "Español",
+  "english": "Spanish",
+  "rtl": false,
+  "un": true,
+  "speakers": 560
+ },
+ {
+  "code": "ru",
+  "native": "Русский",
+  "english": "Russian",
+  "rtl": false,
+  "un": true,
+  "speakers": 250
+ },
+ {
+  "code": "ar",
+  "native": "العربية",
+  "english": "Arabic",
+  "rtl": true,
+  "un": true,
+  "speakers": 300
+ },
+ {
+  "code": "hi",
+  "native": "हिन्दी",
+  "english": "Hindi",
+  "rtl": false,
+  "un": false,
+  "speakers": 600
+ },
+ {
+  "code": "bn",
+  "native": "বাংলা",
+  "english": "Bengali",
+  "rtl": false,
+  "un": false,
+  "speakers": 300
+ },
+ {
+  "code": "pt",
+  "native": "Português",
+  "english": "Portuguese",
+  "rtl": false,
+  "un": false,
+  "speakers": 260
+ },
+ {
+  "code": "id",
+  "native": "Bahasa Indonesia",
+  "english": "Indonesian",
+  "rtl": false,
+  "un": false,
+  "speakers": 200
+ },
+ {
+  "code": "ja",
+  "native": "日本語",
+  "english": "Japanese",
+  "rtl": false,
+  "un": false,
+  "speakers": 125
+ },
+ {
+  "code": "de",
+  "native": "Deutsch",
+  "english": "German",
+  "rtl": false,
+  "un": false,
+  "speakers": 135
+ },
+ {
+  "code": "tr",
+  "native": "Türkçe",
+  "english": "Turkish",
+  "rtl": false,
+  "un": false,
+  "speakers": 90
+ },
+ {
+  "code": "vi",
+  "native": "Tiếng Việt",
+  "english": "Vietnamese",
+  "rtl": false,
+  "un": false,
+  "speakers": 85
+ },
+ {
+  "code": "ko",
+  "native": "한국어",
+  "english": "Korean",
+  "rtl": false,
+  "un": false,
+  "speakers": 80
+ },
+ {
+  "code": "it",
+  "native": "Italiano",
+  "english": "Italian",
+  "rtl": false,
+  "un": false,
+  "speakers": 65
+ },
+ {
+  "code": "fa",
+  "native": "فارسی",
+  "english": "Persian",
+  "rtl": true,
+  "un": false,
+  "speakers": 80
+ },
+ {
+  "code": "th",
+  "native": "ไทย",
+  "english": "Thai",
+  "rtl": false,
+  "un": false,
+  "speakers": 70
+ },
+ {
+  "code": "ta",
+  "native": "தமிழ்",
+  "english": "Tamil",
+  "rtl": false,
+  "un": false,
+  "speakers": 85
+ },
+ {
+  "code": "te",
+  "native": "తెలుగు",
+  "english": "Telugu",
+  "rtl": false,
+  "un": false,
+  "speakers": 95
+ },
+ {
+  "code": "mr",
+  "native": "मराठी",
+  "english": "Marathi",
+  "rtl": false,
+  "un": false,
+  "speakers": 85
+ },
+ {
+  "code": "ur",
+  "native": "اردو",
+  "english": "Urdu",
+  "rtl": true,
+  "un": false,
+  "speakers": 230
+ },
+ {
+  "code": "gu",
+  "native": "ગુજરાતી",
+  "english": "Gujarati",
+  "rtl": false,
+  "un": false,
+  "speakers": 55
+ },
+ {
+  "code": "pl",
+  "native": "Polski",
+  "english": "Polish",
+  "rtl": false,
+  "un": false,
+  "speakers": 40
+ },
+ {
+  "code": "uk",
+  "native": "Українська",
+  "english": "Ukrainian",
+  "rtl": false,
+  "un": false,
+  "speakers": 40
+ },
+ {
+  "code": "ml",
+  "native": "മലയാളം",
+  "english": "Malayalam",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "kn",
+  "native": "ಕನ್ನಡ",
+  "english": "Kannada",
+  "rtl": false,
+  "un": false,
+  "speakers": 45
+ },
+ {
+  "code": "or",
+  "native": "ଓଡ଼ିଆ",
+  "english": "Odia",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "my",
+  "native": "မြန်မာ",
+  "english": "Burmese",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "ne",
+  "native": "नेपाली",
+  "english": "Nepali",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "si",
+  "native": "සිංහල",
+  "english": "Sinhala",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "km",
+  "native": "ខ្មែរ",
+  "english": "Khmer",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "ha",
+  "native": "Hausa",
+  "english": "Hausa",
+  "rtl": false,
+  "un": false,
+  "speakers": 80
+ },
+ {
+  "code": "yo",
+  "native": "Yorùbá",
+  "english": "Yoruba",
+  "rtl": false,
+  "un": false,
+  "speakers": 45
+ },
+ {
+  "code": "ig",
+  "native": "Igbo",
+  "english": "Igbo",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "am",
+  "native": "አማርኛ",
+  "english": "Amharic",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "sw",
+  "native": "Kiswahili",
+  "english": "Swahili",
+  "rtl": false,
+  "un": false,
+  "speakers": 80
+ },
+ {
+  "code": "zu",
+  "native": "isiZulu",
+  "english": "Zulu",
+  "rtl": false,
+  "un": false,
+  "speakers": 30
+ },
+ {
+  "code": "af",
+  "native": "Afrikaans",
+  "english": "Afrikaans",
+  "rtl": false,
+  "un": false,
+  "speakers": 30
+ },
+ {
+  "code": "nl",
+  "native": "Nederlands",
+  "english": "Dutch",
+  "rtl": false,
+  "un": false,
+  "speakers": 25
+ },
+ {
+  "code": "sv",
+  "native": "Svenska",
+  "english": "Swedish",
+  "rtl": false,
+  "un": false,
+  "speakers": 13
+ },
+ {
+  "code": "ro",
+  "native": "Română",
+  "english": "Romanian",
+  "rtl": false,
+  "un": false,
+  "speakers": 25
+ },
+ {
+  "code": "el",
+  "native": "Ελληνικά",
+  "english": "Greek",
+  "rtl": false,
+  "un": false,
+  "speakers": 13
+ },
+ {
+  "code": "cs",
+  "native": "Čeština",
+  "english": "Czech",
+  "rtl": false,
+  "un": false,
+  "speakers": 12
+ },
+ {
+  "code": "hu",
+  "native": "Magyar",
+  "english": "Hungarian",
+  "rtl": false,
+  "un": false,
+  "speakers": 13
+ },
+ {
+  "code": "az",
+  "native": "Azərbaycan",
+  "english": "Azerbaijani",
+  "rtl": false,
+  "un": false,
+  "speakers": 30
+ },
+ {
+  "code": "kk",
+  "native": "Қазақша",
+  "english": "Kazakh",
+  "rtl": false,
+  "un": false,
+  "speakers": 13
+ },
+ {
+  "code": "uz",
+  "native": "Oʻzbek",
+  "english": "Uzbek",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "ms",
+  "native": "Bahasa Melayu",
+  "english": "Malay",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ },
+ {
+  "code": "tl",
+  "native": "Filipino",
+  "english": "Filipino",
+  "rtl": false,
+  "un": false,
+  "speakers": 90
+ },
+ {
+  "code": "pa",
+  "native": "ਪੰਜਾਬੀ",
+  "english": "Punjabi",
+  "rtl": false,
+  "un": false,
+  "speakers": 120
+ },
+ {
+  "code": "sd",
+  "native": "سنڌي",
+  "english": "Sindhi",
+  "rtl": true,
+  "un": false,
+  "speakers": 30
+ },
+ {
+  "code": "ps",
+  "native": "پښتو",
+  "english": "Pashto",
+  "rtl": true,
+  "un": false,
+  "speakers": 60
+ },
+ {
+  "code": "ku",
+  "native": "Kurdî",
+  "english": "Kurdish",
+  "rtl": false,
+  "un": false,
+  "speakers": 30
+ },
+ {
+  "code": "jv",
+  "native": "Basa Jawa",
+  "english": "Javanese",
+  "rtl": false,
+  "un": false,
+  "speakers": 80
+ },
+ {
+  "code": "lah",
+  "native": "لہندا",
+  "english": "Lahnda",
+  "rtl": true,
+  "un": false,
+  "speakers": 100
+ },
+ {
+  "code": "su",
+  "native": "Basa Sunda",
+  "english": "Sundanese",
+  "rtl": false,
+  "un": false,
+  "speakers": 40
+ },
+ {
+  "code": "om",
+  "native": "Afaan Oromoo",
+  "english": "Oromo",
+  "rtl": false,
+  "un": false,
+  "speakers": 35
+ }
+]

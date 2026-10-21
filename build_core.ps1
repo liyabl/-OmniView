@@ -28,7 +28,28 @@ $args = @(
   "--hidden-import", "PySide6.QtPdf",
   "--hidden-import", "PySide6.QtPdfWidgets",
   "--hidden-import", "PySide6.QtMultimedia",
-  "--hidden-import", "PySide6.QtMultimediaWidgets"
+  "--hidden-import", "PySide6.QtMultimediaWidgets",
+  "--hidden-import", "configparser",
+  "--hidden-import", "uuid",
+  "--hidden-import", "timeit",
+  "--hidden-import", "colorsys",
+  "--hidden-import", "decimal",
+  "--hidden-import", "fractions",
+  "--hidden-import", "statistics",
+  "--hidden-import", "timeit",
+  "--hidden-import", "cProfile",
+  "--hidden-import", "pstats",
+  "--hidden-import", "doctest",
+  "--hidden-import", "unittest",
+  "--hidden-import", "tarfile",
+  "--hidden-import", "gzip",
+  "--hidden-import", "bz2",
+  "--hidden-import", "lzma",
+  "--hidden-import", "plistlib",
+  "--hidden-import", "shelve",
+  "--hidden-import", "dbm",
+  "--hidden-import", "sqlite3",
+  "--hidden-import", "csv"
 )
 foreach ($e in $excludes) { $args += @("--exclude-module", $e) }
 $args += "app.py"
@@ -37,3 +58,4 @@ python -m PyInstaller @args
 if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed" }
 $size = [math]::Round(((Get-ChildItem "dist\OmniView" -Recurse -File | Measure-Object Length -Sum).Sum / 1MB), 1)
 Write-Host "core directory: dist\OmniView ($size MB)" -ForegroundColor Green
+

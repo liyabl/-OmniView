@@ -1,4 +1,4 @@
-﻿# OmniView 0.3 · 万象查看器
+# OmniView 0.3 · 万象查看器
 
 > 原生 Windows 查看器。核心很小，格式做成插件；打开巨大的文本/视频不会把内存撑死。
 
@@ -26,7 +26,13 @@ OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
 ## 下载
 
 - `OmniView-Setup.exe`（约 62 MB）：自解压核心，双击运行。
-- `office.ovp`（约 7 MB）：Office 插件，放到 `%LOCALAPPDATA%\OmniView\plugins`，或在界面里点“安装插件”。
+- `office.ovp`（约 7 MB）：DOCX / XLSX / PPTX / ODT / ODP / RTF。
+- `ebook.ovp`（约 0.8 MB）：EPUB / MOBI / AZW3。
+- `data.ovp`（约 28 MB）：Access / DBF / HDF5 / ONNX / PT / PKL / TFLite / 邮件库。
+- `pro.ovp`（约 12 MB）：STL / OBJ / GLB / DXF / SHP / KML / GPX / EXE / ELF / 字体。
+- `raw.ovp`（约 2 MB）：PSD / AI / 相机 RAW。
+- `hello.ovp`：用户自制插件示例。
+- `安装全部插件.cmd`：一次安装上面全部插件。
 
 首次启动会要求选择界面语言；文件内容永远按原文显示。
 
@@ -40,7 +46,10 @@ OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
 | --- | --- | --- |
 | Core | Qt Widgets、QtPdf、QtMultimedia/FFmpeg、图片、压缩包、文本引擎、SQLite、插件管理器、i18n | 解压后约 186 MB，自解压包约 62 MB |
 | Office 插件 | mammoth / python-docx / openpyxl / python-pptx / odfpy / lxml | 约 7 MB |
-| E-book / Data / 3D / RAW 插件 | 后续独立发布 | 各自独立 |
+| E-book 插件 | mobi / loguru / imghdr | 约 0.8 MB |
+| Data 插件 | h5py / onnx / tflite / dbf / access-parser / extract-msg | 约 28 MB |
+| Pro 插件 | ezdxf / pyshp / fontTools / pefile / pyelftools / macholib | 约 12 MB |
+| RAW 插件 | rawpy / psd-tools | 约 2 MB |
 
 核心只加载实际用到的模块；第三方重依赖在插件目录的 `site-packages` 中，安装后才加入 `sys.path`。
 
@@ -131,14 +140,15 @@ office.ovp (zip)
 # 2. 自解压 Setup（PyInstaller 单文件引导器）
 .\build_setup.ps1
 
-# 3. Office 插件（已安装依赖时）
+# 3. 全部插件（已安装依赖时）
 python build_office_plugin.py
+python build_plugins.py
 ```
 
 产物：
 
 - `release\OmniView-Setup.exe`：自解压核心；
-- `plugins\office.ovp`：Office 插件；
+- `plugins\office.ovp`、`ebook.ovp`、`data.ovp`、`pro.ovp`、`raw.ovp`、`hello.ovp`：独立插件；
 - `dist\OmniView\OmniView.exe`：调试用核心目录。
 
 核心构建会排除 Office/数据/3D/RAW 的重依赖，避免把未使用库打进主程序。

@@ -20,6 +20,7 @@ Contact sheet: `00_contact_sheet.png`.
 | 12 | `12_error_page.png` | Unknown format shows a visible error page with copy/plugin-manager actions |
 | 13 | `13_plugin_manager.png` | Plugin manager: install .ovp from file/URL, remove, developer info; custom `hello` plugin listed |
 | 14 | `14_plugin_parse_error.png` | A user plugin that raises shows full traceback, copy/plugin-manager actions |
+| 15 | `15_all_plugins.png` | Office, e-book, data, 3D/CAD/GIS, RAW/PSD all installed and enabled |
 
 ## Large text measurement
 
@@ -40,5 +41,6 @@ the plugin page instead of crashing.
 `07_language_picker.png` lists 58 entries. The six UN languages have complete catalogs
 (`en/zh/fr/es/ru/ar`); other languages are marked `English fallback` until community JSON is
 contributed. File content is never translated.
+
 
 

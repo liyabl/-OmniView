@@ -71,6 +71,15 @@ def main() -> int:
                 tests += ["验收文档.docx", "销售数据.xlsx", "产品演示.pptx"]
             if _pm.installed("hello"):
                 tests += ["sample.hello"]
+            if _pm.installed("ebook"):
+                tests += ["示例电子书.epub"]
+            if _pm.installed("data"):
+                tests += ["科学数据.h5", "演示模型.onnx", "权重.pt", "对象.pkl",
+                          "城市点位.dbf", "邮件归档.mbox"]
+            if _pm.installed("pro"):
+                tests += ["球体.glb", "示例图纸.dxf", "城市点位.shp", "示例地图.kml", "示例模型.step"]
+            if _pm.installed("raw"):
+                tests += ["示例图层.psd"]
         except Exception:
             pass
         base = os.path.dirname(sys.executable) if getattr(sys, "frozen", False) else os.path.dirname(os.path.abspath(__file__))
@@ -111,3 +120,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

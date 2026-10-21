@@ -1,4 +1,4 @@
-﻿# OmniView 0.3 · 万象查看器
+# OmniView 0.3 · 万象查看器
 
 > 原生 Windows 查看器。核心很小，格式做成插件；打开巨大的文本/视频不会把内存撑死。
 
@@ -13,7 +13,7 @@ OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
 [![Build](https://github.com/USER/OmniView/actions/workflows/build.yml/badge.svg)](../../actions)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-0078D4)
 ![CPU](https://img.shields.io/badge/runtime-CPU%20only-4fd1c5)
-![License](https://img.shields.io/badge/license-MIT-7aa2ff)
+![License](https://img.shields.io/badge/license-FSL--1.1--ALv2-7aa2ff)
 
 ![原生 PDF](docs/shot_native_pdf.png)
 
@@ -158,12 +158,6 @@ python build_plugins.py
 
 在线安装按钮需要设置环境变量 `OMNIVIEW_PLUGIN_BASE` 指向你的 Releases 插件目录；没设置时请用“从 .ovp 文件安装…”，不会因为空地址报 404。
 
----
-
-## 测试证据
-
-所有验收截图在 [test-evidence/README.md](test-evidence/README.md)：PDF、PPTX、XLSX、3D、SHP、DXF、语言选择、31MB 文本窗口、Office 插件、缺插件页。
-
 ## 插件管理（0.3 新增）
 
 - 帮助 → 插件管理…：安装 `.ovp`、从 URL 安装、移除、打开插件目录。
@@ -213,13 +207,13 @@ def create_viewer(path, parent=None):
 
 ## 许可
 
-- **核心与自行编写的插件代码**：MIT。
+- **核心与自行编写的插件代码**：**FSL-1.1-ALv2**（Functional Source License 1.1，两年后转为 Apache-2.0）。完整文本见 [LICENSE](LICENSE)。
 - **`ebook.ovp`**：包含 GPL-3.0 的 `mobi`/KindleUnpack、GPL-2.0 的 `unidecode`，**插件包整体按 GPL-3.0 兼容方式分发**。
 - **`data.ovp`**：包含 GPL-3.0 的 `extract-msg`、`RTFDE`，**插件包整体按 GPL-3.0 兼容方式分发**。
 - `office.ovp`、`pro.ovp`、`raw.ovp` 为 MIT/BSD/Apache 等宽松许可依赖；Qt/PySide6 为 LGPLv3；7-Zip 为 LGPL。
 - 插件包内已收集依赖的 LICENSE 文件；完整清单见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
-核心 MIT 与 GPL 插件是**相互独立的组件**；不要把 `ebook.ovp` / `data.ovp` 宣称为 MIT。
+核心 FSL 与 GPL 插件是**相互独立的组件**；不要把 `ebook.ovp` / `data.ovp` 宣称为 FSL 或 MIT。
 
 
 

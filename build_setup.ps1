@@ -37,6 +37,10 @@ Copy-Item "dist\OmniView-Setup.exe" "release\OmniView-Setup.exe" -Force
 if (Test-Path "packaging") {
   Copy-Item "packaging\*" "release\" -Force
 }
+Copy-Item "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md" "release\" -Force
+if (Test-Path "docs\PLUGIN_FORMAT.md") {
+  Copy-Item "docs\PLUGIN_FORMAT.md" "release\" -Force
+}
 $size = [math]::Round((Get-Item "release\OmniView-Setup.exe").Length / 1MB, 1)
 Write-Host "Setup: release\OmniView-Setup.exe ($size MB)" -ForegroundColor Green
 

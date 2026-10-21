@@ -1,6 +1,6 @@
 # Third-party notices — OmniView 0.3
 
-OmniView 源代码采用 MIT License。构建产物包含以下第三方组件：
+OmniView 核心与自行编写的插件代码采用 **FSL-1.1-ALv2**（Functional Source License，两年后转 Apache-2.0）；不是 MIT。第三方组件如下。
 
 ## Core
 

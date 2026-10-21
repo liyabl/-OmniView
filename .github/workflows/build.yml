@@ -1,4 +1,4 @@
-name: build-windows
+﻿name: build-windows
 
 on:
   push:
@@ -45,8 +45,10 @@ jobs:
           path: |
             release/OmniView-Setup.exe
             plugins/*.ovp
-            packaging/*.cmd
-            packaging/插件安装说明.txt
+            packaging/Install-All-Plugins.cmd
+            packaging/Install-Office-Plugin.cmd
+            packaging/Uninstall.cmd
+            packaging/Plugin-Install-README.txt
       - name: Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
@@ -54,7 +56,10 @@ jobs:
           files: |
             release/OmniView-Setup.exe
             plugins/*.ovp
-            packaging/*.cmd
-            packaging/插件安装说明.txt
+            packaging/Install-All-Plugins.cmd
+            packaging/Install-Office-Plugin.cmd
+            packaging/Uninstall.cmd
+            packaging/Plugin-Install-README.txt
+
 
 

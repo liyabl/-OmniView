@@ -32,7 +32,7 @@ OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
 - `pro.ovp`（约 8 MB）：STL / OBJ / GLB / DXF / SHP / KML / GPX / EXE / ELF / 字体。
 - `raw.ovp`（约 2 MB）：PSD / AI / 相机 RAW。
 - `hello.ovp`：用户自制插件示例。
-- `安装全部插件.cmd`：一次安装上面全部插件。
+- `Install-All-Plugins.cmd`：一次安装上面全部插件（中文别名 `安装全部插件.cmd`）。
 
 首次启动会要求选择界面语言；文件内容永远按原文显示。
 

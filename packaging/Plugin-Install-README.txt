@@ -1,0 +1,37 @@
+﻿OmniView 0.3 插件安装（全部）
+
+一、安装核心
+   双击 OmniView-Setup.exe，解压到：
+   %LOCALAPPDATA%\OmniView\0.3
+
+二、一次安装全部插件
+   双击 安装全部插件.cmd。
+   它会关闭旧 OmniView，并安装同目录下所有 .ovp：
+   office.ovp  DOCX/XLSX/PPTX/ODT/ODP/RTF
+   ebook.ovp   EPUB/MOBI/AZW3
+   data.ovp    Access/DBF/HDF5/ONNX/PT/PKL/TFLite/邮件库
+   pro.ovp     STL/OBJ/GLB/DXF/SHP/KML/GPX/EXE/ELF/字体
+   raw.ovp     PSD/AI/相机 RAW
+   hello.ovp   示例自定义插件（.hello）
+
+三、单独安装
+   帮助 → 插件管理… → 安装 .ovp…
+   或拖 .ovp 进窗口
+   或 OmniView.exe --install-plugin path\to\plugin.ovp
+
+四、验证
+   %LOCALAPPDATA%\OmniView\plugins\<id>\plugin.json
+
+五、用户自制 OVP
+   python build_ovp.py --template plugins/hello
+   python build_ovp.py --source plugins/hello --out plugins/hello.ovp
+   规范见 PLUGIN_FORMAT.md。
+
+注意：
+- 全部插件会执行 Python 代码，只安装信任的包。
+- 解析失败时 OmniView 会打开红色错误页，显示完整 traceback。
+- Office 插件也可以单独用 安装Office插件.cmd 安装。
+
+六、卸载
+   运行 Uninstall.cmd；插件目录默认保留。
+

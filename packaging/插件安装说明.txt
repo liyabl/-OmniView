@@ -31,3 +31,7 @@
 - 全部插件会执行 Python 代码，只安装信任的包。
 - 解析失败时 OmniView 会打开红色错误页，显示完整 traceback。
 - Office 插件也可以单独用 安装Office插件.cmd 安装。
+
+六、卸载
+   运行 Uninstall.cmd；插件目录默认保留。
+

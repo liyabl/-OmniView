@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt -r plugin_requirements.txt
+          pip install -r requirements.txt -r plugin_requirements.txt -r dev-requirements.txt
       - name: Install 7-Zip
         run: choco install 7zip -y --no-progress
       - name: Self test (offscreen)
@@ -53,4 +53,5 @@ jobs:
             plugins/*.ovp
             packaging/*.cmd
             packaging/插件安装说明.txt
+
 

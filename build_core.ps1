@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $Root
 
-Write-Host "== OmniView 0.2 core (onedir) ==" -ForegroundColor Cyan
+Write-Host "== OmniView 0.3 core (onedir) ==" -ForegroundColor Cyan
 if (Test-Path build) { Remove-Item build -Recurse -Force }
 if (Test-Path dist) { Remove-Item dist -Recurse -Force }
 
@@ -36,7 +36,6 @@ $args = @(
   "--hidden-import", "decimal",
   "--hidden-import", "fractions",
   "--hidden-import", "statistics",
-  "--hidden-import", "timeit",
   "--hidden-import", "cProfile",
   "--hidden-import", "pstats",
   "--hidden-import", "doctest",
@@ -58,4 +57,5 @@ python -m PyInstaller @args
 if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed" }
 $size = [math]::Round(((Get-ChildItem "dist\OmniView" -Recurse -File | Measure-Object Length -Sum).Sum / 1MB), 1)
 Write-Host "core directory: dist\OmniView ($size MB)" -ForegroundColor Green
+
 

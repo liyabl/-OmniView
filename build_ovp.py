@@ -1,4 +1,4 @@
-﻿"""Build a user-made .ovp plugin package.
+"""Build a user-made .ovp plugin package.
 
 Examples:
   python build_ovp.py --template myplugin
@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import py_compile
 import re
 import shutil
 import sys
@@ -54,14 +55,17 @@ def create_viewer(path, parent=None):
 
 def create_template(target: str) -> None:
     os.makedirs(target, exist_ok=True)
-    json.dump(TEMPLATE_MANIFEST, open(os.path.join(target, "plugin.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    open(os.path.join(target, "plugin.py"), "w", encoding="utf-8").write(TEMPLATE_PLUGIN)
-    open(os.path.join(target, "README.txt"), "w", encoding="utf-8").write(
-        "1. Edit plugin.json and plugin.py.\n"
-        "2. Run: python build_ovp.py --source . --out hello.ovp\n"
-        "3. Install hello.ovp from OmniView -> Help -> Plugin Manager.\n"
-        "4. Open a .hello file.\n"
-    )
+    with open(os.path.join(target, "plugin.json"), "w", encoding="utf-8") as f:
+        json.dump(TEMPLATE_MANIFEST, f, ensure_ascii=False, indent=1)
+    with open(os.path.join(target, "plugin.py"), "w", encoding="utf-8") as f:
+        f.write(TEMPLATE_PLUGIN)
+    with open(os.path.join(target, "README.txt"), "w", encoding="utf-8") as f:
+        f.write(
+            "1. Edit plugin.json and plugin.py.\n"
+            "2. Run: python build_ovp.py --source . --out hello.ovp\n"
+            "3. Install hello.ovp from OmniView -> Help -> Plugin Manager.\n"
+            "4. Open a .hello file.\n"
+        )
     print(f"template created: {target}")
 
 
@@ -69,12 +73,20 @@ def build(source: str, out: str) -> None:
     manifest_path = os.path.join(source, "plugin.json")
     if not os.path.exists(manifest_path):
         raise SystemExit("source must contain plugin.json")
-    meta = json.load(open(manifest_path, "r", encoding="utf-8-sig"))
+    with open(manifest_path, "r", encoding="utf-8-sig") as f:
+        meta = json.load(f)
     if not ID_RE.match(str(meta.get("id", ""))):
         raise SystemExit("plugin.json id is invalid")
     entry = str(meta.get("entry") or "")
-    if entry and not os.path.exists(os.path.join(source, entry.replace("/", os.sep))):
-        raise SystemExit(f"entry does not exist: {entry}")
+    if entry:
+        entry_path = os.path.join(source, entry.replace("/", os.sep))
+        if not os.path.exists(entry_path):
+            raise SystemExit(f"entry does not exist: {entry}")
+        if entry_path.endswith(".py"):
+            try:
+                py_compile.compile(entry_path, doraise=True)
+            except py_compile.PyCompileError as e:
+                raise SystemExit(f"entry has a syntax error: {e}") from e
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for base, _dirs, files in os.walk(source):

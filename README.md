@@ -1,4 +1,4 @@
-# OmniView 0.3 · 万象查看器
+﻿# OmniView 0.3 · 万象查看器
 
 > 原生 Windows 查看器。核心很小，格式做成插件；打开巨大的文本/视频不会把内存撑死。
 
@@ -28,8 +28,8 @@ OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
 - `OmniView-Setup.exe`（约 62 MB）：自解压核心，双击运行。
 - `office.ovp`（约 7 MB）：DOCX / XLSX / PPTX / ODT / ODP / RTF。
 - `ebook.ovp`（约 0.8 MB）：EPUB / MOBI / AZW3。
-- `data.ovp`（约 28 MB）：Access / DBF / HDF5 / ONNX / PT / PKL / TFLite / 邮件库。
-- `pro.ovp`（约 12 MB）：STL / OBJ / GLB / DXF / SHP / KML / GPX / EXE / ELF / 字体。
+- `data.ovp`（约 25 MB）：Access / DBF / HDF5 / ONNX / PT / PKL / TFLite / 邮件库。
+- `pro.ovp`（约 8 MB）：STL / OBJ / GLB / DXF / SHP / KML / GPX / EXE / ELF / 字体。
 - `raw.ovp`（约 2 MB）：PSD / AI / 相机 RAW。
 - `hello.ovp`：用户自制插件示例。
 - `安装全部插件.cmd`：一次安装上面全部插件。
@@ -47,8 +47,8 @@ OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
 | Core | Qt Widgets、QtPdf、QtMultimedia/FFmpeg、图片、压缩包、文本引擎、SQLite、插件管理器、i18n | 解压后约 186 MB，自解压包约 62 MB |
 | Office 插件 | mammoth / python-docx / openpyxl / python-pptx / odfpy / lxml | 约 7 MB |
 | E-book 插件 | mobi / loguru / imghdr | 约 0.8 MB |
-| Data 插件 | h5py / onnx / tflite / dbf / access-parser / extract-msg | 约 28 MB |
-| Pro 插件 | ezdxf / pyshp / fontTools / pefile / pyelftools / macholib | 约 12 MB |
+| Data 插件 | h5py / onnx / tflite / dbf / access-parser / extract-msg | 约 25 MB |
+| Pro 插件 | ezdxf / pyshp / fontTools / pefile / pyelftools / macholib | 约 8 MB |
 | RAW 插件 | rawpy / psd-tools | 约 2 MB |
 
 核心只加载实际用到的模块；第三方重依赖在插件目录的 `site-packages` 中，安装后才加入 `sys.path`。
@@ -134,10 +134,13 @@ office.ovp (zip)
 ## 构建
 
 ```powershell
+# 0. 依赖 + 构建工具 + 全部插件依赖
+pip install -r requirements.txt -r plugin_requirements.txt -r dev-requirements.txt
+
 # 1. 核心 onedir
 .\build_core.ps1
 
-# 2. 自解压 Setup（PyInstaller 单文件引导器）
+# 2. 自解压 Setup（PyInstaller 单文件引导器；需要 7-Zip）
 .\build_setup.ps1
 
 # 3. 全部插件（已安装依赖时）
@@ -187,6 +190,16 @@ def create_viewer(path, parent=None):
 
 完整规范：[docs/PLUGIN_FORMAT.md](docs/PLUGIN_FORMAT.md)。示例插件：`plugins/hello/`。
 
+## 卸载
+
+运行 `packaging\Uninstall.cmd`，或手动删除：
+
+```text
+%LOCALAPPDATA%\OmniView\0.3
+```
+
+插件在 `%LOCALAPPDATA%\OmniView\plugins`，默认保留；要彻底删除也删这个目录。
+
 ## 已知边界
 
 - DOCX/PPTX 是原生重排，不是 Word/PowerPoint 像素级分页。
@@ -200,7 +213,16 @@ def create_viewer(path, parent=None):
 
 ## 许可
 
-源代码 MIT；预编译包包含 Qt/PySide6（LGPLv3）、7-Zip（LGPL）以及各插件依赖。第三方许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+- **核心与自行编写的插件代码**：MIT。
+- **`ebook.ovp`**：包含 GPL-3.0 的 `mobi`/KindleUnpack、GPL-2.0 的 `unidecode`，**插件包整体按 GPL-3.0 兼容方式分发**。
+- **`data.ovp`**：包含 GPL-3.0 的 `extract-msg`、`RTFDE`，**插件包整体按 GPL-3.0 兼容方式分发**。
+- `office.ovp`、`pro.ovp`、`raw.ovp` 为 MIT/BSD/Apache 等宽松许可依赖；Qt/PySide6 为 LGPLv3；7-Zip 为 LGPL。
+- 插件包内已收集依赖的 LICENSE 文件；完整清单见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+核心 MIT 与 GPL 插件是**相互独立的组件**；不要把 `ebook.ovp` / `data.ovp` 宣称为 MIT。
+
+
+
 
 
 

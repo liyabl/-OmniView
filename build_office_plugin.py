@@ -1,4 +1,4 @@
-﻿"""Build the Office .ovp plugin from installed pure-Python dependencies."""
+"""Build the Office .ovp plugin from installed pure-Python dependencies."""
 from __future__ import annotations
 
 import importlib.util
@@ -32,13 +32,14 @@ def main() -> int:
         print("copied", name)
     if missing:
         print("optional/missing:", ", ".join(missing))
-    json.dump({
-        "id": "office",
-        "name": "Office 文档",
-        "version": "0.3.0",
-        "formats": ["docx", "odt", "rtf", "xlsx", "pptx", "odp"],
-        "entry": "",
-    }, open(os.path.join(PLUGIN, "plugin.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    with open(os.path.join(PLUGIN, "plugin.json"), "w", encoding="utf-8") as f:
+        json.dump({
+            "id": "office",
+            "name": "Office 文档",
+            "version": "0.3.0",
+            "formats": ["docx", "odt", "rtf", "xlsx", "pptx", "odp"],
+            "entry": "",
+        }, f, ensure_ascii=False, indent=1)
 
     out = os.path.join(ROOT, "plugins", "office.ovp")
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:

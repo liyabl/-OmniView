@@ -1,3 +1,4 @@
+﻿# NOTE: ebook.ovp and data.ovp include GPL components; see THIRD_PARTY_NOTICES.md.
 # Optional plugin build dependencies (pip install -r requirements.txt -r plugin_requirements.txt)
 mobi>=0.4.1
 loguru>=0.6
@@ -34,3 +35,4 @@ zstandard>=0.13
 rawpy>=0.21
 psd-tools>=1.10
 attrs>=23
+

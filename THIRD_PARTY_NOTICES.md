@@ -54,7 +54,7 @@ mammoth (BSD-2-Clause), python-docx (MIT), openpyxl (MIT), python-pptx (MIT), od
 | beautifulsoup4 (bs4) | MIT |
 | RTFDE | GPL-3.0 |
 | red-black-tree-mod | MIT |
-| chardet | LGPL-2.1 |
+| chardet | MIT |
 
 **注意：** `extract-msg`、`RTFDE` 为 GPL-3.0。若分发此插件，请遵守 GPL。
 

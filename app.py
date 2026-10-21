@@ -13,8 +13,29 @@ from omniview.ui.main_window import MainWindow
 from omniview.ui.theme import apply_theme
 
 
+def _positional_args(argv: list[str]) -> list[str]:
+    """Drop OmniView switches and their values (never treat them as files)."""
+    out = []
+    i = 0
+    takes_value = {"--install-plugin", "--lang"}
+    while i < len(argv):
+        a = argv[i]
+        if a in takes_value:
+            i += 2
+            continue
+        if a.startswith("--"):
+            i += 1
+            continue
+        out.append(a)
+        i += 1
+    return out
+
+
 def main() -> int:
+    # Must be set before QApplication is constructed.
     os.environ.setdefault("QT_ENABLE_HIGHDPI_SCALING", "1")
+    if "--self-test" in sys.argv:
+        os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     app = QApplication(sys.argv)
     app.setApplicationName("OmniView")
     app.setOrganizationName("OmniView")
@@ -23,8 +44,6 @@ def main() -> int:
     if os.path.exists(icon):
         app.setWindowIcon(QIcon(icon))
 
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    initial = args[0] if args else None
     if "--install-plugin" in sys.argv:
         try:
             p = sys.argv[sys.argv.index("--install-plugin") + 1]
@@ -41,6 +60,9 @@ def main() -> int:
         except Exception as e:
             QMessageBox.critical(None, "插件安装失败", str(e))
             return 3
+
+    args = _positional_args(sys.argv[1:])
+    initial = args[0] if args else None
     settings = QSettings("OmniView", "OmniView")
     lang = settings.value("ui/language", "")
     if "--lang" in sys.argv:
@@ -48,6 +70,8 @@ def main() -> int:
             lang = sys.argv[sys.argv.index("--lang") + 1]
         except Exception:
             pass
+    if "--self-test" in sys.argv:
+        lang = "en"  # deterministic self-test
     if not lang and "--self-test" not in sys.argv:
         from omniview.ui.language_dialog import LanguageDialog
         chosen = LanguageDialog.ask()
@@ -60,7 +84,6 @@ def main() -> int:
     plugin_manager.preload_installed()
 
     if "--self-test" in sys.argv:
-        os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
         tests = [
             "验收文档.pdf", "sample.png", "sample.tiff", "测试音频.mp3", "演示视频.mkv",
             "素材归档.zip", "demo.py", "README.md", "示例数据库.sqlite", "说明.txt",

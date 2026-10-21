@@ -3,6 +3,8 @@ $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $Root
 if (-not (Test-Path "dist\OmniView\OmniView.exe")) { throw "Run build_core.ps1 first" }
 if (-not (Test-Path "assets\app.ico")) { throw "assets/app.ico missing" }
+if (-not (Test-Path "assets\7z\7z.exe")) { throw "assets/7z/7z.exe missing" }
+if (-not (Test-Path "assets\7z\7z.dll")) { throw "assets/7z/7z.dll missing" }
 
 $SevenZip = $env:SEVENZIP
 $candidates = @(
@@ -16,6 +18,7 @@ if (-not $SevenZip) {
   throw "7-Zip not found. Install 7-Zip or set the SEVENZIP environment variable to 7z.exe."
 }
 New-Item -ItemType Directory -Force build | Out-Null
+Set-Content "build\version.txt" "0.3" -Encoding ascii
 Remove-Item "build\payload.7z" -Force -ErrorAction SilentlyContinue
 & $SevenZip a -t7z -mx=9 -y "build\payload.7z" ".\dist\OmniView\*" | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "7z compress failed" }
@@ -24,6 +27,7 @@ python -m PyInstaller --noconfirm --clean --onefile --windowed `
   --name OmniView-Setup `
   --icon assets\app.ico `
   --add-data "build\payload.7z;." `
+  --add-data "build\version.txt;." `
   --add-data "assets\7z;assets\7z" `
   launcher.py
 if ($LASTEXITCODE -ne 0) { throw "PyInstaller launcher failed" }

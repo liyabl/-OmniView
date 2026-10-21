@@ -18,31 +18,39 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt -r plugin_requirements.txt
+      - name: Install 7-Zip
+        run: choco install 7zip -y --no-progress
       - name: Self test (offscreen)
         env:
           QT_QPA_PLATFORM: offscreen
         run: python app.py --lang en --self-test
       - name: Build Office plugin
         run: python build_office_plugin.py
+      - name: Build other plugins
+        run: python build_plugins.py
       - name: Build core
         shell: pwsh
         run: .\build_core.ps1
-      - name: Build self-extracting SFX
+      - name: Build self-extracting setup
         shell: pwsh
         run: .\build_setup.ps1
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: OmniView-0.2
+          name: OmniView-0.3
           path: |
             release/OmniView-Setup.exe
-            plugins/office.ovp
+            plugins/*.ovp
+            packaging/*.cmd
+            packaging/插件安装说明.txt
       - name: Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           files: |
             release/OmniView-Setup.exe
-            plugins/office.ovp
+            plugins/*.ovp
+            packaging/*.cmd
+            packaging/插件安装说明.txt
 

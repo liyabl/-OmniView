@@ -1,7 +1,7 @@
-﻿"""Tiny self-extracting launcher for OmniView 0.2.
+"""Tiny self-extracting launcher for OmniView 0.3.
 
 The real payload (payload.7z) and 7z.exe are bundled by PyInstaller.  At
-runtime this launcher extracts the payload to %LOCALAPPDATA%\\OmniView\\0.2
+runtime this launcher extracts the payload to %LOCALAPPDATA%\\OmniView\\0.3
 and starts the native app.
 """
 from __future__ import annotations

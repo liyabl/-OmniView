@@ -1,4 +1,4 @@
-﻿"""On-demand plugin manager for .ovp packages (OmniView 0.3).
+"""On-demand plugin manager for .ovp packages (OmniView 0.3).
 
 An .ovp is a zip:
 
@@ -25,10 +25,7 @@ from PySide6.QtWidgets import QDialog, QLabel, QProgressBar, QVBoxLayout, QMessa
 
 from . import paths
 
-PLUGIN_BASE_URL = os.environ.get(
-    "OMNIVIEW_PLUGIN_BASE",
-    "https://github.com/USER/OmniView/releases/download/plugins-v0.3",
-)
+PLUGIN_BASE_URL = os.environ.get("OMNIVIEW_PLUGIN_BASE", "").rstrip("/")
 
 CATALOG = {
     "office": {
@@ -299,6 +296,9 @@ class _Download(QThread):
             if local:
                 self.progress.emit(100)
                 self.done.emit(local)
+                return
+            if not PLUGIN_BASE_URL:
+                self.failed.emit("未配置插件下载地址；请用“从 .ovp 文件安装…”或设置 OMNIVIEW_PLUGIN_BASE。")
                 return
             url = f"{PLUGIN_BASE_URL}/{self.pid}.ovp"
             tmp = self.dest + ".part"

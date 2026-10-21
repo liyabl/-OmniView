@@ -12,12 +12,18 @@ from . import paths
 
 
 def sevenzip() -> str:
-    p = paths.bundled("7z", "7z.exe")
-    if os.path.exists(p):
-        return p
-    for cand in (r"C:\Program Files\7-Zip\7z.exe", r"C:\Program Files (x86)\7-Zip\7z.exe"):
-        if os.path.exists(cand):
-            return cand
+    # Prefer the 7z.exe shipped inside assets/7z (one-dir: _internal/assets/7z).
+    for p in (paths.bundled("assets", "7z", "7z.exe"), paths.bundled("7z", "7z.exe")):
+        if os.path.exists(p):
+            return p
+    found = shutil.which("7z") or shutil.which("7z.exe")
+    if found:
+        return found
+    for base in (os.environ.get("ProgramFiles"), os.environ.get("ProgramFiles(x86)")):
+        if base:
+            p = os.path.join(base, "7-Zip", "7z.exe")
+            if os.path.exists(p):
+                return p
     return "7z"
 
 

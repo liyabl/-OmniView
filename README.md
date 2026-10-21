@@ -153,6 +153,8 @@ python build_plugins.py
 
 核心构建会排除 Office/数据/3D/RAW 的重依赖，避免把未使用库打进主程序。
 
+在线安装按钮需要设置环境变量 `OMNIVIEW_PLUGIN_BASE` 指向你的 Releases 插件目录；没设置时请用“从 .ovp 文件安装…”，不会因为空地址报 404。
+
 ---
 
 ## 测试证据
@@ -199,6 +201,7 @@ def create_viewer(path, parent=None):
 ## 许可
 
 源代码 MIT；预编译包包含 Qt/PySide6（LGPLv3）、7-Zip（LGPL）以及各插件依赖。第三方许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
 
 
 

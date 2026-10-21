@@ -87,7 +87,7 @@ def main() -> int:
         win = MainWindow()
         failures = []
         for name in tests:
-            p = os.path.join(base, name) if name != "notepad.exe" else r"C:\Windows\System32\notepad.exe"
+            p = os.path.join(base, name)
             if not os.path.exists(p):
                 failures.append((name, "missing"))
                 continue

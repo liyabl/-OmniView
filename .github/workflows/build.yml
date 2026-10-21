@@ -1,4 +1,4 @@
-﻿name: build-windows
+name: build-windows
 
 on:
   push:
@@ -32,6 +32,8 @@ jobs:
         run: python build_office_plugin.py
       - name: Build other plugins
         run: python build_plugins.py
+      - name: Build example plugin
+        run: python build_ovp.py --source plugins/hello --out plugins/hello.ovp
       - name: Build core
         shell: pwsh
         run: .\build_core.ps1

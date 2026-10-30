@@ -1,188 +1,283 @@
-# OmniView 0.3 · 万象查看器
+# OmniView · 万象查看器
 
-> 原生 Windows 查看器。核心很小，格式做成插件；打开巨大的文本/视频不会把内存撑死。
+一个 Windows 上的文件查看器。
 
-OmniView 0.3 从 0.2 的“单 exe 全家桶”重构成：
+起因很普通：电脑里总会躺着一些 PDF、Word、Excel、PSD、压缩包、视频和不知道用什么打开的文件。为了看其中一个，去装一整套 Office、Photoshop 或者转换工具，实在有点烦。
 
-- **核心 Shell**：原生 Qt Widgets 窗口，只内置 PDF、文本、图片、音视频、压缩包、代码、SQLite。
-- **`.ovp` 插件**：Office、电子书、数据/模型、3D/CAD/GIS、RAW/PSD 按需下载；用户点开对应文件时才提示安装。
-- **自解压 SFX**：`OmniView-Setup.exe` 内含压缩后的核心，运行时解压到 `%LOCALAPPDATA%\OmniView\0.3` 再启动。
-- **多语言**：首次启动选择语言；UN 6 种内置完整目录，其他 30M+ 语言列出并由社区 JSON 补齐。
-- **大文件**：文本 2MB 窗口 + mmap；视频流式解码/拖动；PDF 只渲染可见页。
+OmniView 想做的，就是把这件事变简单一点：一个原生窗口，能直接看常见的、不太常见的格式；需要额外解析的格式再装插件，不用为用不到的东西付体积。
+
+它不是 Office、Photoshop、AutoCAD 的替代品，也不是什么“万能神器”。它更像一个顺手的小工具：能看、能翻、能确认内容，复杂编辑请交给专业软件。
+
+![PDF](docs/shot_native_pdf.png)
+
+![PPTX](docs/shot_pptx.png)
+
+![CPU 三角面渲染](docs/shot_native_球体_glb.png)
 
 ![Build](https://img.shields.io/badge/build-GitHub%20Actions-2088FF?logo=githubactions)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-0078D4)
 ![CPU](https://img.shields.io/badge/runtime-CPU%20only-4fd1c5)
 ![License](https://img.shields.io/badge/license-FSL--1.1--ALv2-7aa2ff)
 
-![原生 PDF](docs/shot_native_pdf.png)
+---
 
-![原生 PPTX](docs/shot_pptx.png)
+## 下载和安装
 
-![CPU 三角面](docs/shot_native_球体_glb.png)
+最新版本在 [Releases](https://github.com/liyabl/-OmniView/releases/latest)。
+
+先下载 `OmniView-Setup.exe`，双击运行。它会解压到：
+
+```text
+%LOCALAPPDATA%\OmniView\0.3
+```
+
+然后自动启动。
+
+第一次打开会问界面语言。选完以后，文件内容仍然按原文显示，不会自动翻译。
+
+### 只装核心也可以
+
+核心自带 PDF、文本、代码、图片、音视频、压缩包和 SQLite。平时只是看 PDF、图片、ZIP，到这里就够了。
+
+### 需要 Office/PSD/3D 时再装插件
+
+Release 里还有几个 `.ovp`：
+
+```text
+office.ovp   DOCX / XLSX / PPTX / ODT / ODP / RTF
+ebook.ovp    EPUB / MOBI / AZW3
+data.ovp     Access / DBF / HDF5 / ONNX / PT / PKL / TFLite / 邮件库
+pro.ovp      STL / OBJ / GLB / DXF / SHP / KML / GPX / EXE / ELF / 字体
+raw.ovp      PSD / AI / 相机 RAW
+hello.ovp    一个用户自制插件示例
+```
+
+最省事的是双击 `Install-All-Plugins.cmd`。它会关掉正在运行的 OmniView，把同目录的插件装到：
+
+```text
+%LOCALAPPDATA%\OmniView\plugins\
+```
+
+然后重新启动 OmniView。
+
+也可以只装一个：
+
+- 打开对应文件，缺插件页面点“从 .ovp 文件安装…”
+- 或者帮助 → 插件管理… → 安装 `.ovp…`
+- 或者直接把 `.ovp` 拖进窗口
+
+几个说明：
+
+- 安装/覆盖时会关闭正在运行的 OmniView，未保存的文本请先保存。
+- 未做代码签名，Windows SmartScreen 可能提示“未知发布者”；选择“更多信息 → 仍要运行”。
+- 插件不是越多越好，不用就不装。
 
 ---
 
-## 下载
+## 它现在能做什么
 
-- `OmniView-Setup.exe`（约 62 MB）：自解压核心，双击运行。
-- `office.ovp`（约 7 MB）：DOCX / XLSX / PPTX / ODT / ODP / RTF。
-- `ebook.ovp`（约 0.8 MB）：EPUB / MOBI / AZW3。
-- `data.ovp`（约 25 MB）：Access / DBF / HDF5 / ONNX / PT / PKL / TFLite / 邮件库。
-- `pro.ovp`（约 8 MB）：STL / OBJ / GLB / DXF / SHP / KML / GPX / EXE / ELF / 字体。
-- `raw.ovp`（约 2 MB）：PSD / AI / 相机 RAW。
-- `hello.ovp`：用户自制插件示例。
-- `Install-All-Plugins.cmd`：一次安装上面全部插件（中文别名 `安装全部插件.cmd`）。
+核心不依赖本机的 Office、WPS、Photoshop、AutoCAD、7-Zip 或 FFmpeg。
 
-首次启动会要求选择界面语言；文件内容永远按原文显示。
+- PDF：原生 PDFium 渲染，支持翻页、缩放、适合宽度
+- 文本/代码：常见编码识别、语法高亮、文本可编辑
+- 图片：PNG/JPEG/GIF/WebP/TIFF/BMP/ICO/SVG 等
+- 音视频：Qt 内置 FFmpeg 解码
+- 压缩包：ZIP/7Z/RAR/TAR/ISO 等，内置 7-Zip
+- SQLite：直接打开数据库看表和记录
 
----
+插件补上：
 
-## 为什么不是把全部库塞进一个 exe
+- Office 文档：DOCX/ODT/RTF/XLSX/PPTX/ODP
+- 电子书：EPUB/MOBI/AZW3
+- 数据与模型：Access/DBF/HDF5/ONNX/PT/PKL/TFLite
+- 3D/CAD/GIS：STL/OBJ/GLB/DXF/SHP/KML/GPX
+- RAW/PSD：相机 RAW、Photoshop PSD、AI
 
-0.1 的 105 MB 单文件能打开很多格式，但每个用户都为不用的格式付体积和启动成本。0.2 改成：
+**但要说清楚：**
 
-| 层 | 内容 | 体积 |
-| --- | --- | --- |
-| Core | Qt Widgets、QtPdf、QtMultimedia/FFmpeg、图片、压缩包、文本引擎、SQLite、插件管理器、i18n | 解压后约 186 MB，自解压包约 62 MB |
-| Office 插件 | mammoth / python-docx / openpyxl / python-pptx / odfpy / lxml | 约 7 MB |
-| E-book 插件 | mobi / loguru / imghdr | 约 0.8 MB |
-| Data 插件 | h5py / onnx / tflite / dbf / access-parser / extract-msg | 约 25 MB |
-| Pro 插件 | ezdxf / pyshp / fontTools / pefile / pyelftools / macholib | 约 8 MB |
-| RAW 插件 | rawpy / psd-tools | 约 2 MB |
-
-核心只加载实际用到的模块；第三方重依赖在插件目录的 `site-packages` 中，安装后才加入 `sys.path`。
+- DOCX/PPTX 是原生重排，不是 Word/PowerPoint 的像素级分页。
+- DWG 目前只读文件头/版本/字符串；DXF 能正常画。
+- STEP/BLEND/SKP/PST 是结构或元数据视图，不是完整专业内核。
+- 视频能不能拖动，取决于文件本身有没有索引；没有索引的流只能按顺序看。
 
 ---
 
-## 大文件策略
+## 为什么不是一个巨大的 exe
 
-### 文本：2MB 滑动窗口
+最早的确做过一个 105 MB 的单文件版本，所有东西都塞在里面。
 
-- 用 `mmap` 打开文件，不把 500MB 读进 Python 字符串。
-- 每次只解码 2MB，按换行对齐，`QPlainTextEdit` 只持有当前窗口。
-- 上一段/下一段/百分比跳转；编码检测只读前 256KB。
-- 8MB 以下仍使用普通可编辑文本查看器；超过则自动进入只读分块模式。
+能用，但有两个问题：
 
-### 视频：流式解码
+1. 每个用户都要为不用的格式付体积；
+2. 想换一个依赖，就得重新发整个包。
 
-- `QMediaPlayer` + Qt 内置 FFmpeg，按需读取/拖动，不转码、不缓存整段。
-- 几百小时的 MP4/MKV 可以直接打开和 seek；能否播放取决于容器索引和编码，不取决于时长。
-- 不把视频帧一次性解码进内存。
+现在拆成三层：
 
-### PDF：只渲染可见页
+- **核心**：原生窗口、PDF、文本、图片、音视频、压缩包、SQLite
+- **插件**：Office、电子书、数据、3D、RAW 各自独立
+- **Setup**：自解压，第一次运行时解压核心
 
-- `QPdfDocument.render` -> QImage -> QLabel，页面按视口宽度渲染。
-- 只渲染视口附近的页，滚动时按需补渲染；不一次性渲染整本。
+核心解压后大约 186 MB，Setup 约 62 MB。插件从 1 MB 到 25 MB 不等，装不装由你决定。
+
+---
+
+## 大文件是怎么处理的
+
+这块是实际做过取舍的。
+
+### 文本
+
+超过 8 MB 的文本不再整个读进编辑器，而是用 `mmap` 打开，每次只解码 2 MB 左右的窗口。
+
+上一段、下一段、百分比跳转都在；当前窗口之外的内容不占编辑器内存。
+
+一个 30 MB 的日志，编辑器里可能只持有 1–2 MB 字符；500 MB 的文件也不会一次性塞进 Python 字符串。
+
+### 视频
+
+用 Qt 的 `QMediaPlayer` 流式读取，不转码、不把整段视频缓存到内存。
+
+几百小时的视频能不能打开，主要看容器和索引，不是看时长。没有索引的损坏文件就只能顺序播。
+
+### PDF
+
+只渲染当前视口附近的页面，滚动时再补。不会一打开就把整本 PDF 全部渲染成图片。
 
 ### 压缩包
 
-- 列表由 7-Zip 流式输出；打开条目时才解压到缓存。
+列表由 7-Zip 输出，打开某个条目时才解压到缓存。
 
 ---
 
 ## 多语言
 
-首次启动 `LanguageDialog` 列出：
+第一次启动会让你选语言。
 
-- 联合国 6 种官方语言：阿拉伯语、中文、英语、法语、俄语、西班牙语；
-- 使用人口 3000 万+ 的语言（共 58 项，含印地语、孟加拉语、葡萄牙语、印尼语、日语、德语、土耳其语、越南语、韩语、意大利语、波斯语、泰语、泰米尔语、乌尔都语等）。
+列表里包括联合国 6 种官方语言，以及使用人口 3000 万以上的语言，总共 58 项。
 
-目录是普通 JSON：`omniview/locales/<code>.json`。社区可以直接 PR，或放到：
+但翻译进度要说实话：
 
+- 完整目录：`en / zh / fr / es / ru / ar`
+- 其余语言目前是 `English fallback`，选择器里会标出来
+
+语言文件就是普通 JSON：
+
+```text
+omniview/locales/<code>.json
 ```
+
+社区可以直接 PR，也可以放到：
+
+```text
 %LOCALAPPDATA%\OmniView\locales\<code>.json
 ```
 
-当前内置完整目录：`en / zh / fr / es / ru / ar`；其余语言在补齐前回退英文，选择器会标注 `English fallback`。内容不翻译，只翻译界面。
+只翻译界面，不翻译文件内容。
 
 ---
 
-## 插件格式 `.ovp`
+## 插件和自己做插件
 
-```
-office.ovp (zip)
+`.ovp` 就是一个 zip：
+
+```text
+myplugin.ovp
   plugin.json
-  site-packages/
-    mammoth/ ...
-    docx/ ...
-    openpyxl/ ...
-    pptx/ ...
-    lxml/ ...
+  plugin.py          # 可选，自定义查看器
+  site-packages/     # 可选，依赖
 ```
 
 `plugin.json`：
 
 ```json
 {
-  "id": "office",
-  "name": "Office 文档",
-  "version": "0.3.0",
-  "formats": ["docx", "odt", "rtf", "xlsx", "pptx", "odp"],
-  "entry": ""
+  "id": "hello",
+  "name": "Hello Viewer",
+  "version": "1.0.0",
+  "formats": ["hello"],
+  "entry": "plugin.py",
+  "factory": "create_viewer"
 }
 ```
 
-安装后解压到 `%LOCALAPPDATA%\OmniView\plugins\<id>`，`site-packages` 加入 `sys.path`。打开对应扩展名时：
+`plugin.py` 里返回一个 `ViewerBase`：
 
-1. 未安装 -> `MissingPluginViewer`，显示插件大小和“安装插件”；
-2. 已安装 -> 加载插件依赖，创建原生查看器；
-3. 插件损坏/缺依赖 -> 明确报错，不影响核心。
+```python
+from omniview.ui.common import ViewerBase
 
----
 
-## 构建
+class HelloViewer(ViewerBase):
+    ...
 
-```powershell
-# 0. 依赖 + 构建工具 + 全部插件依赖
-pip install -r requirements.txt -r plugin_requirements.txt -r dev-requirements.txt
 
-# 1. 核心 onedir
-.\build_core.ps1
-
-# 2. 自解压 Setup（PyInstaller 单文件引导器；需要 7-Zip）
-.\build_setup.ps1
-
-# 3. 全部插件（已安装依赖时）
-python build_office_plugin.py
-python build_plugins.py
+def create_viewer(path, parent=None):
+    return HelloViewer(path, parent)
 ```
 
-产物：
-
-- `release\OmniView-Setup.exe`：自解压核心；
-- `plugins\office.ovp`、`ebook.ovp`、`data.ovp`、`pro.ovp`、`raw.ovp`、`hello.ovp`：独立插件；
-- `dist\OmniView\OmniView.exe`：调试用核心目录。
-
-核心构建会排除 Office/数据/3D/RAW 的重依赖，避免把未使用库打进主程序。
-
-在线安装按钮需要设置环境变量 `OMNIVIEW_PLUGIN_BASE` 指向你的 Releases 插件目录；没设置时请用“从 .ovp 文件安装…”，不会因为空地址报 404。
-
-## 插件管理（0.3 新增）
-
-- 帮助 → 插件管理…：安装 `.ovp`、从 URL 安装、移除、打开插件目录。
-- 缺插件页：`从 .ovp 文件安装…`。
-- 把 `.ovp` 直接拖进窗口也可以安装。
-- 命令行：`OmniView.exe --install-plugin path\to\plugin.ovp`
-- 解析失败不会再弹一个框消失，而是打开红色“无法解析此文件”标签页，显示完整 traceback、复制错误、打开插件管理。
-
-## 自制 OVP（0.3 新增）
-
-`.ovp` 就是 zip：`plugin.json` + 可选 `plugin.py` + `site-packages/`。
+仓库里已经有现成模板：
 
 ```powershell
 python build_ovp.py --template plugins/hello
 python build_ovp.py --source plugins/hello --out plugins/hello.ovp
 ```
 
-`plugin.py` 暴露：
+把 `hello.ovp` 装进去，再打开一个 `.hello` 文件，就能看到效果。
 
-```python
-def create_viewer(path, parent=None):
-    return MyViewer(path, parent)  # 必须返回 ViewerBase 子类
+完整规范在 [docs/PLUGIN_FORMAT.md](docs/PLUGIN_FORMAT.md)。
+
+### 解析失败会怎样
+
+不会静默退出，也不会只弹一个框就结束。
+
+会打开一个红色的“无法解析此文件”页面，显示：
+
+- 文件路径
+- 插件 id
+- 完整 traceback
+- 复制错误
+- 打开插件管理
+- 打开文件位置
+
+插件没装时是另一套页面：显示插件大小、安装按钮，以及“从 .ovp 文件安装…”。
+
+---
+
+## 从源码运行
+
+```powershell
+pip install -r requirements.txt
+python app.py
 ```
 
-完整规范：[docs/PLUGIN_FORMAT.md](docs/PLUGIN_FORMAT.md)。示例插件：`plugins/hello/`。
+如果只是跑核心，不需要装插件依赖。
+
+### 构建完整版本
+
+```powershell
+pip install -r requirements.txt -r plugin_requirements.txt -r dev-requirements.txt
+
+python build_office_plugin.py
+python build_plugins.py
+.\build_core.ps1
+.\build_setup.ps1
+```
+
+会生成：
+
+```text
+release\OmniView-Setup.exe
+plugins\*.ovp
+```
+
+构建 Setup 需要本机有 7-Zip，或者设置：
+
+```powershell
+$env:SEVENZIP = "C:\path\to\7z.exe"
+```
+
+推 `v*` tag 后，GitHub Actions 会自动构建并发布 Release。
+
+---
 
 ## 卸载
 
@@ -192,36 +287,34 @@ def create_viewer(path, parent=None):
 %LOCALAPPDATA%\OmniView\0.3
 ```
 
-插件在 `%LOCALAPPDATA%\OmniView\plugins`，默认保留；要彻底删除也删这个目录。
+插件默认保留在：
 
-## 已知边界
+```text
+%LOCALAPPDATA%\OmniView\plugins
+```
 
-- DOCX/PPTX 是原生重排，不是 Word/PowerPoint 像素级分页。
-- DWG 仍只展示文件头/字符串；DXF 完整渲染。完整 DWG 需要 LibreDWG 插件。
-- STEP/BLEND/SKP/PST 是结构/元数据视图。
-- 视频能否 seek 取决于文件索引；无索引的损坏流只能顺序播放。
-- 超大文本是只读分块；不会把 500MB 一次性塞进编辑器。
-- 插件签名/校验和、增量更新、崩溃上报是下一阶段。
+要彻底删除，把 plugins 目录也删掉。
+
+---
+
+## 已知问题
+
+- DOCX/PPTX 做不到 Office 的逐页像素级一致。
+- DWG 仍是元数据视图；完整 DWG 要等 LibreDWG 插件。
+- STEP/BLEND/SKP/PST 只展示结构。
+- 视频 seek 依赖文件索引。
+- 超大文本是只读分块，不能在原文件上直接编辑。
+- 插件没有签名/沙箱，`.ovp` 会执行 Python 代码，只安装信任的包。
+- 插件校验和、增量更新、崩溃上报还没做。
 
 ---
 
 ## 许可
 
-- **核心与自行编写的插件代码**：**FSL-1.1-ALv2**（Functional Source License 1.1，两年后转为 Apache-2.0）。完整文本见 [LICENSE](LICENSE)。
-- **`ebook.ovp`**：包含 GPL-3.0 的 `mobi`/KindleUnpack、GPL-2.0 的 `unidecode`，**插件包整体按 GPL-3.0 兼容方式分发**。
-- **`data.ovp`**：包含 GPL-3.0 的 `extract-msg`、`RTFDE`，**插件包整体按 GPL-3.0 兼容方式分发**。
-- `office.ovp`、`pro.ovp`、`raw.ovp` 为 MIT/BSD/Apache 等宽松许可依赖；Qt/PySide6 为 LGPLv3；7-Zip 为 LGPL。
-- 插件包内已收集依赖的 LICENSE 文件；完整清单见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+- 核心和自行编写的插件代码：**FSL-1.1-ALv2**，两年后转为 Apache-2.0。完整文本见 [LICENSE](LICENSE)。
+- `ebook.ovp` 含 GPL-3.0 的 `mobi`/KindleUnpack、GPL-2.0 的 `unidecode`，插件包整体按 GPL-3.0 兼容方式分发。
+- `data.ovp` 含 GPL-3.0 的 `extract-msg`、`RTFDE`，插件包整体按 GPL-3.0 兼容方式分发。
+- `office.ovp`、`pro.ovp`、`raw.ovp` 的依赖以 MIT/BSD/Apache 为主；Qt/PySide6 是 LGPLv3；7-Zip 是 LGPL。
+- 第三方组件和插件内 LICENSE 见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
-核心 FSL 与 GPL 插件是**相互独立的组件**；不要把 `ebook.ovp` / `data.ovp` 宣称为 FSL 或 MIT。
-
-
-
-
-
-
-
-
-
-
-
+FSL 核心和 GPL 插件是分开的组件，不要把整个 Release 说成 FSL 或 MIT。

@@ -1,18 +1,20 @@
-# OmniView `.ovp` 插件格式（0.3）
+# OmniView `.ovp` plugin format (0.3)
 
-`.ovp` 本质是 **zip**，不需要编译。用户可以自己制作、手动安装、拖进窗口安装。
+**English** | [简体中文](PLUGIN_FORMAT.zh-CN.md)
 
-## 目录结构
+An `.ovp` file is a **zip archive**. Nothing is compiled. You can make one yourself, install it manually, or drag it into OmniView.
+
+## Layout
 
 ```
 myplugin.ovp
-  plugin.json          # 必须
-  plugin.py            # 可选：自定义 Viewer
-  site-packages/       # 可选：Python 依赖
-  assets/              # 可选：插件自己的资源
+  plugin.json          # required
+  plugin.py            # optional: custom viewer
+  site-packages/       # optional: Python dependencies
+  licenses/            # recommended: dependency licenses
 ```
 
-## plugin.json
+## `plugin.json`
 
 ```json
 {
@@ -26,19 +28,19 @@ myplugin.ovp
 }
 ```
 
-| 字段 | 必填 | 说明 |
+| Field | Required | Notes |
 | --- | --- | --- |
-| `id` | 是 | 字母/数字/`_ . -`，1–64 字符；安装目录名 |
-| `name` | 是 | 显示名 |
-| `version` | 否 | 默认 `0.0.0` |
-| `formats` | 是 | 小写扩展名数组，不带点 |
-| `entry` | 否 | `plugin.py` 或包名；没有则为纯依赖包 |
-| `factory` | 否 | 默认 `create_viewer` |
-| `api` | 否 | 当前为 1 |
+| `id` | yes | letters, digits, `_ . -`; 1–64 chars; used as the install directory |
+| `name` | yes | display name |
+| `version` | no | defaults to `0.0.0` |
+| `formats` | yes | lowercase extensions without dots |
+| `entry` | no | `plugin.py` or a module/package name; omit for a dependency-only pack |
+| `factory` | no | defaults to `create_viewer` |
+| `api` | no | currently `1` |
 
-## 自定义 Viewer
+## Custom viewer
 
-`plugin.py`：
+`plugin.py`:
 
 ```python
 from PySide6.QtWidgets import QLabel
@@ -52,70 +54,71 @@ class HelloViewer(ViewerBase):
         label = QLabel(text)
         label.setWordWrap(True)
         self.root.addWidget(label, 1)
-        self.info = {"格式": "HELLO", "插件": "hello"}
+        self.info = {"format": "HELLO", "plugin": "hello"}
 
 
 def create_viewer(path, parent=None):
     return HelloViewer(path, parent)
 ```
 
-约束：
+Rules:
 
-- `create_viewer(path, parent=None)` 必须返回 `ViewerBase` 子类；
-- 可以直接 `from omniview...` 使用核心 API；
-- 插件目录与 `site-packages` 会加入 `sys.path`；
-- 异常不会被吞掉：OmniView 会打开一个红色的 **“无法解析此文件”** 标签页，显示完整 traceback。
+- `create_viewer(path, parent=None)` must return a `ViewerBase` subclass.
+- The plugin directory and its `site-packages` are added to `sys.path`.
+- Exceptions are not swallowed: OmniView opens a red **Unable to parse this file** tab with the full traceback.
 
-## 纯依赖包
+## Dependency-only packs
 
-Office 插件就是纯依赖包：`plugin.json` 里不写 `entry`，只提供 `site-packages`，由核心已有的 DOCX/XLSX/PPTX 查看器调用。
+The Office plugin is a dependency-only pack: no `entry`, just `site-packages`; the core viewers use those dependencies.
 
 ```json
 {
   "id": "office",
-  "name": "Office 文档",
+  "name": "Office Documents",
   "version": "0.3.0",
   "formats": ["docx", "xlsx", "pptx", "odt", "odp", "rtf"]
 }
 ```
 
-## 制作与构建
+## Build
 
 ```powershell
-# 生成模板
+# create a starter template
 python build_ovp.py --template plugins/hello
 
-# 修改 plugins/hello/plugin.json 和 plugin.py 后打包
+# edit plugins/hello/plugin.json and plugin.py, then package
 python build_ovp.py --source plugins/hello --out plugins/hello.ovp
 ```
 
-## 安装方式
+`build_ovp.py` runs `py_compile` on the entry file before packaging, so a syntax error is caught at build time.
 
-1. **界面**：帮助 → 插件管理… → 安装 `.ovp…`
-2. **缺插件页**：打开文件 → “从 .ovp 文件安装…”
-3. **拖拽**：把 `.ovp` 直接拖进 OmniView 窗口
-4. **命令行**：`OmniView.exe --install-plugin path\to\my.ovp`
-5. **手动**：解压到 `%LOCALAPPDATA%\OmniView\plugins\<id>\`
+## Install
 
-## 校验与错误
+1. **Plugin Manager**: Help → Plugin Manager… → Install `.ovp…`
+2. **Missing-plugin page**: “Install from .ovp file…”
+3. **Drag and drop**: drop the `.ovp` into the OmniView window
+4. **Command line**: `OmniView.exe --install-plugin path\to\my.ovp`
+5. **Manual**: extract to `%LOCALAPPDATA%\OmniView\plugins\<id>\`
 
-安装前会验证：
+## Validation and errors
 
-- 必须是 zip；
-- 根目录必须有 `plugin.json`；
-- `id` 合法；
-- `formats` 非空；
-- `entry` 指向的文件必须在包内；
-- 不允许 `..` 路径穿越。
+Before installation OmniView checks:
 
-验证失败会直接提示原因，例如：
+- the file is a valid zip;
+- `plugin.json` exists at the root;
+- `id` is valid;
+- `formats` is a non-empty array;
+- `entry` points to a file inside the archive;
+- paths do not contain `..` traversal.
 
+Failures are reported directly, for example:
+
+```text
+Not a valid .ovp: plugin.json is missing from the archive root
+plugin.json parse failed: Expecting value: line 1 column 1
+entry does not exist in the archive: plugin.py
 ```
-不是有效的 .ovp：根目录缺少 plugin.json
-plugin.json 解析失败：Expecting value: line 1 column 1
-entry 指向的文件不在包内：plugin.py
-```
 
-## 安全提示
+## Security
 
-`.ovp` 会执行 Python 代码。只安装你信任的插件。0.3 还没有签名/沙箱；后续会加 SHA-256、签名和权限声明。
+An `.ovp` executes Python code. Only install plugins you trust. 0.3 has no signature or sandbox yet; SHA-256 checks, signing, and permission declarations are future work.

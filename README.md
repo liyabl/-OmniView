@@ -133,6 +133,14 @@ Previous/next chunk and percentage jumps are available. Only the current window 
 
 A 30 MB log may hold 1–2 MB of characters in the widget; a 500 MB file does not become one giant Python string.
 
+### Spreadsheets
+
+A normal `.xlsx` goes through openpyxl. If the file is over 8 MB, or the active sheet has more than 20,000 rows, OmniView switches to a streaming viewer instead.
+
+The streaming path reads the worksheet XML in row windows (300 rows at a time), keeps shared strings in a disk-backed SQLite index, and never builds a `QTableWidgetItem` for the whole workbook. It shows values, not the full cell styling.
+
+Jumping to a distant row still has to scan from the start of the sheet XML. It is slower than a normal workbook, but it should not consume gigabytes of RAM.
+
 ### Video
 
 Playback uses Qt's `QMediaPlayer` as a stream. Nothing is transcoded and the whole video is not cached in memory.

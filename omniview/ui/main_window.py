@@ -299,6 +299,8 @@ class MainWindow(QMainWindow):
 
     def create_viewer(self, path: str) -> ViewerBase | None:
         from .viewers_doc import PdfViewer, RichTextViewer, TextViewer, MarkdownViewer, SheetViewer, PptxViewer, EpubViewer, ChunkedTextViewer
+        from .viewers_sheet_large import LargeSheetViewer
+        from .. import xlsx_stream
         from .viewers_media import ImageViewer, MediaViewer
         from .viewers_data import (ArchiveViewer, DatabaseViewer, Hdf5Viewer, ModelViewer, MailViewer,
                                    MeshViewer, CadViewer, GeoViewer, FontViewer, BinaryViewer)
@@ -341,6 +343,8 @@ class MainWindow(QMainWindow):
         if kind == "notebook":
             return RichTextViewer(path)
         if kind == "sheet" or kind == "csv":
+            if ext in ("xlsx", "xlsm", "xltx", "xltm") and xlsx_stream.is_large(path):
+                return LargeSheetViewer(path)
             return SheetViewer(path)
         if kind == "epub" or kind == "mobi":
             return EpubViewer(path)
@@ -501,5 +505,7 @@ class MainWindow(QMainWindow):
                 event.ignore()
                 return
         super().closeEvent(event)
+
+
 
 
